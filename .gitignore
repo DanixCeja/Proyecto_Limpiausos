@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entornos virtuales
+venv/
+env/
+.venv/
+
+# VS Code
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# Variables de entorno
+.env
+
+# Archivos temporales
+*.tmp
+*.temp
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# TensorFlow
+checkpoint
+*.index
+*.data-00000-of-00001
+
+# Modelos grandes (descomenta si NO quieres subir el modelo)
+# Api/model/*.keras
+# Api/model/*.h5
+
+# Dataset
+dataset/
+train/
+test/
+
+# Cache de Python
+.pytest_cache/
+.mypy_cache/
+
+# Archivos compilados
+build/
+dist/
+
+# Render
+.render/
+
+# Node (si tu frontend usa React/Vue)
+node_modules/
+frontend/node_modules/
+
+# Archivos de salida
+*.csv
+*.xlsx
+*.zip
