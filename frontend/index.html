@@ -1,3 +1,116 @@
+
+Claude terminó la respuesta
+tengo este html que trata de prediccion de imagenes me lo puedes mejorar y acomodar todo de modo profesional te paso el html y el js paro 
+
+const API_URL = "https://proyecto-limpiausos.onrender.com/predict";
+
+const imageInput = document.getElementById("imageInput");
+const preview = document.getElementById("preview");
+
+imageInput.addEventListener("change", () => {
+
+    const file = imageInput.files[0];
+
+    if(file){
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+    }
+
+});
+
+async function enviarImagen(){
+
+    const file = imageInput.files[0];
+
+    if(!file){
+        alert("Selecciona una imagen");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const resultado = document.getElementById("resultado");
+
+    resultado.innerHTML = "<h3>🔍 Analizando imagen...</h3>";
+
+    try{
+
+        const response = await fetch(API_URL,{
+            method:"POST",
+            body:formData
+        });
+
+        const data = await response.json();
+
+        const estadoEnvase = data.envase_correcto
+            ? "Correcto y limpio"
+            : "Defectuoso o roto";
+
+        const nivelLlenado = data.botella_llena
+            ? "Llena"
+            : "Vacía";
+
+        const resultadoFinal = data.producto_aprobado
+            ? "Aprobado"
+            : "Rechazado";
+
+        const conclusion = data.producto_aprobado
+            ? "Producto APROBADO para distribución."
+            : "Producto RECHAZADO. Requiere revisión.";
+
+        resultado.innerHTML = `
+        <div class="resultado-card">
+
+            <h2>🔍 RESULTADO DE INSPECCIÓN</h2>
+
+            <p>
+                <strong>Estado del envase:</strong>
+                ${estadoEnvase}
+                |
+                <strong>Confianza:</strong>
+                ${(data.prob_envase * 100).toFixed(2)}%
+            </p>
+
+            <p>
+                <strong>Nivel de llenado:</strong>
+                ${nivelLlenado}
+                |
+                <strong>Confianza:</strong>
+                ${(data.prob_botella * 100).toFixed(2)}%
+            </p>
+
+            <p>
+                <strong>Resultado final:</strong>
+                ${resultadoFinal}
+                |
+                <strong>Confianza:</strong>
+                ${(data.prob_producto * 100).toFixed(2)}%
+            </p>
+
+            <hr>
+
+            <p>
+                <strong>Conclusión:</strong>
+                ${conclusion}
+            </p>
+
+        </div>
+        `;
+
+    }catch(error){
+
+        resultado.innerHTML = `
+            <p style="color:red;">
+                Error al conectar con la API.
+            </p>
+        `;
+
+        console.error(error);
+    }
+}
+y este es el html 
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -37,4 +150,171 @@
 
 </body>
 
+</html>}
+Mostrar más
+11:03 p.m.
+
+Check frontend design skill
+Check frontend design skill
+Aquí va la versión mejorada — interfaz industrial/técnica con diseño limpio, animaciones sutiles, y la lógica JS integrada:
+
+
+
+Aquí tienes el HTML y JS completos para guardar como tus archivos:
+
+
+Se crearon 3 archivos, archivo leído
+Se crearon 3 archivos, archivo leído
+Los tres archivos están listos. Aquí un resumen de lo que mejoré:
+
+Diseño visual — tema oscuro industrial con tipografía IBM Plex Mono/Sans, paleta verde neón para aprobaciones y rojo para rechazos. Nada genérico.
+
+UX de carga de imagen — la zona ahora acepta arrastrar y soltar, muestra el nombre y peso del archivo, y la vista previa cubre el área completa con una transición suave.
+
+Resultados — cada métrica tiene su propia tarjeta con una barra de confianza animada. El veredicto final aparece como un bloque de estado prominente con icono y descripción.
+
+JS mejorado:
+
+Manejo correcto de errores HTTP (antes solo capturaba fallos de red)
+El botón se desactiva durante el análisis para evitar doble envío
+aria-live y role="alert" para accesibilidad
+Soporte real de drag & drop
+Responsive — en pantallas menores de 680 px los paneles se apilan verticalmente.
+
+
+Index
+Código · HTML 
+
+Styles
+Código · CSS 
+
+Script
+JS 
+dame el ejemplo de como se veria
+
+11:14 p.m.
+
+
+Puedes alternar entre los dos estados con los botones Aprobado y Rechazado para ver cómo se ve cada resultado — barras de confianza, colores y el veredicto final cambian en tiempo real.
+
+logo.jpg
+Vaaa me parece perfecto me le podrias agregar animaciones y el logo porfas
+
+11:19 p.m.
+¡Perfecto logo! Voy a rediseñar el demo con el logo real y animaciones más elaboradas.
+
+
+Se ejecutaron 2 comandos
+Se ejecutaron 2 comandos
+
+
+
+
+Se quedó sin mensajes gratuitos hasta 12:10 a.m.
+Seguir trabajando
+
+
+
+
+Claude es IA y puede cometer errores. Por favor, verifica nuevamente las respuestas.
+
+
+raw
+Index · HTML
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inspección de Calidad — LIMPIAUSOS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+ 
+  <div class="app">
+ 
+    <!-- Barra superior -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="logo-badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00e5a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 12a10 10 0 1 0 20 0 10 10 0 0 0-20 0"/>
+            <path d="M12 8v4l3 3"/>
+          </svg>
+        </div>
+        <div>
+          <span class="brand-name">LIMPIAUSOS</span>
+          <span class="brand-sub">/ Inspección de calidad</span>
+        </div>
+      </div>
+      <div class="status-pill" role="status">
+        <div class="status-dot"></div>
+        SISTEMA ACTIVO
+      </div>
+    </header>
+ 
+    <!-- Panel principal -->
+    <div class="main">
+ 
+      <!-- Panel izquierdo: entrada -->
+      <aside class="panel-left">
+ 
+        <div>
+          <div class="section-label">Imagen a inspeccionar</div>
+          <div class="upload-zone" id="uploadZone" role="button" tabindex="0" aria-label="Zona de carga de imagen">
+            <img id="preview" src="" alt="Vista previa de imagen cargada" />
+            <div class="upload-placeholder" id="uploadPlaceholder">
+              <div class="upload-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7a8299" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+              </div>
+              <p class="upload-text">Arrastra una imagen o haz clic para seleccionar</p>
+              <p class="upload-subtext">PNG · JPG · WEBP &nbsp;·&nbsp; Máx 10 MB</p>
+            </div>
+          </div>
+          <input type="file" id="imageInput" accept="image/*" aria-label="Seleccionar imagen" />
+        </div>
+ 
+        <div class="file-info" id="fileInfo" aria-live="polite">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#4a5168;flex-shrink:0">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+          <span class="file-name" id="fileName" style="color:#4a5168">Ningún archivo seleccionado</span>
+        </div>
+ 
+        <button class="analyze-btn" id="analyzeBtn" onclick="enviarImagen()" disabled aria-disabled="true">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          Analizar imagen
+        </button>
+ 
+      </aside>
+ 
+      <!-- Panel derecho: resultados -->
+      <section class="panel-right" id="panelRight" aria-live="polite">
+        <div class="empty-state" id="emptyState">
+          <div class="empty-grid" aria-hidden="true">
+            <div class="empty-card"><div class="empty-bar" style="width:80%"></div></div>
+            <div class="empty-card"><div class="empty-bar" style="width:60%"></div></div>
+            <div class="empty-card" style="grid-column:1/-1;height:40px;"><div class="empty-bar" style="width:50%"></div></div>
+          </div>
+          <p class="empty-text">Carga una imagen para iniciar la inspección</p>
+        </div>
+      </section>
+ 
+    </div>
+  </div>
+ 
+  <script src="script.js"></script>
+</body>
 </html>
+ 
