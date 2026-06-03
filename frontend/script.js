@@ -8,9 +8,7 @@ imageInput.addEventListener("change", () => {
     const file = imageInput.files[0];
 
     if(file){
-
         preview.src = URL.createObjectURL(file);
-
         preview.style.display = "block";
     }
 
@@ -26,12 +24,11 @@ async function enviarImagen(){
     }
 
     const formData = new FormData();
-
     formData.append("file", file);
 
     const resultado = document.getElementById("resultado");
 
-    resultado.innerHTML = "Analizando imagen...";
+    resultado.innerHTML = "<h3>🔍 Analizando imagen...</h3>";
 
     try{
 
@@ -42,31 +39,68 @@ async function enviarImagen(){
 
         const data = await response.json();
 
+        const estadoEnvase = data.envase_correcto
+            ? "Correcto y limpio"
+            : "Defectuoso o roto";
+
+        const nivelLlenado = data.botella_llena
+            ? "Llena"
+            : "Vacía";
+
+        const resultadoFinal = data.producto_aprobado
+            ? "Aprobado"
+            : "Rechazado";
+
+        const conclusion = data.producto_aprobado
+            ? "Producto APROBADO para distribución."
+            : "Producto RECHAZADO. Requiere revisión.";
+
         resultado.innerHTML = `
-            <h3>Resultado</h3>
+        <div class="resultado-card">
 
-            <p><b>Envase correcto:</b> ${data.envase_correcto}</p>
+            <h2>🔍 RESULTADO DE INSPECCIÓN</h2>
 
-            <p><b>Botella llena:</b> ${data.botella_llena}</p>
+            <p>
+                <strong>Estado del envase:</strong>
+                ${estadoEnvase}
+                |
+                <strong>Confianza:</strong>
+                ${(data.prob_envase * 100).toFixed(2)}%
+            </p>
 
-            <p><b>Producto aprobado:</b> ${data.producto_aprobado}</p>
+            <p>
+                <strong>Nivel de llenado:</strong>
+                ${nivelLlenado}
+                |
+                <strong>Confianza:</strong>
+                ${(data.prob_botella * 100).toFixed(2)}%
+            </p>
+
+            <p>
+                <strong>Resultado final:</strong>
+                ${resultadoFinal}
+                |
+                <strong>Confianza:</strong>
+                ${(data.prob_producto * 100).toFixed(2)}%
+            </p>
 
             <hr>
 
-            <p>Probabilidad envase:
-            ${(data.prob_envase*100).toFixed(2)}%</p>
+            <p>
+                <strong>Conclusión:</strong>
+                ${conclusion}
+            </p>
 
-            <p>Probabilidad llenado:
-            ${(data.prob_botella*100).toFixed(2)}%</p>
-
-            <p>Probabilidad aprobación:
-            ${(data.prob_producto*100).toFixed(2)}%</p>
+        </div>
         `;
 
     }catch(error){
 
-        resultado.innerHTML =
-        "<p>Error al conectar con la API</p>";
+        resultado.innerHTML = `
+            <p style="color:red;">
+                Error al conectar con la API.
+            </p>
+        `;
 
         console.error(error);
     }
